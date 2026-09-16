@@ -1,0 +1,97 @@
+model,feature,measure,value
+Logistic Regression,age,standardized coefficient,-0.17656021531681976
+Logistic Regression,bp,standardized coefficient,0.5602720041387622
+Logistic Regression,sg,standardized coefficient,-1.7111072031795767
+Logistic Regression,al,standardized coefficient,0.9588019874356762
+Logistic Regression,su,standardized coefficient,0.6406685312591927
+Logistic Regression,bgr,standardized coefficient,0.6849201991096512
+Logistic Regression,bu,standardized coefficient,0.4242313501607215
+Logistic Regression,sc,standardized coefficient,0.8818118983065869
+Logistic Regression,sod,standardized coefficient,-0.22768586220878223
+Logistic Regression,pot,standardized coefficient,-0.1362869246392424
+Logistic Regression,hemo,standardized coefficient,-1.6301349857708305
+Logistic Regression,pcv,standardized coefficient,-1.3853558565464752
+Logistic Regression,wc,standardized coefficient,0.013574161082672497
+Logistic Regression,rc,standardized coefficient,-0.8530136805082389
+Logistic Regression,rbc,standardized coefficient,-0.45510990702454385
+Logistic Regression,pc,standardized coefficient,-0.33695855683980835
+Logistic Regression,pcc,standardized coefficient,0.10961813267238187
+Logistic Regression,ba,standardized coefficient,0.05434779877796583
+Logistic Regression,htn,standardized coefficient,1.0422876431212769
+Logistic Regression,dm,standardized coefficient,1.0423374895616528
+Logistic Regression,cad,standardized coefficient,-0.02000819793632778
+Logistic Regression,appet,standardized coefficient,-0.8888434057245816
+Logistic Regression,pe,standardized coefficient,0.357963437964239
+Logistic Regression,ane,standardized coefficient,0.20580377792455967
+Decision Tree,age,feature importance,0.0
+Decision Tree,bp,feature importance,0.0
+Decision Tree,sg,feature importance,0.1477101449275362
+Decision Tree,al,feature importance,0.038956521739130445
+Decision Tree,su,feature importance,0.0
+Decision Tree,bgr,feature importance,0.0
+Decision Tree,bu,feature importance,0.01647354066791416
+Decision Tree,sc,feature importance,0.0008783068783068751
+Decision Tree,sod,feature importance,0.018888888888888886
+Decision Tree,pot,feature importance,0.0
+Decision Tree,hemo,feature importance,0.711111111111111
+Decision Tree,pcv,feature importance,0.0031175523349435837
+Decision Tree,wc,feature importance,0.0
+Decision Tree,rc,feature importance,0.06286393345216876
+Decision Tree,rbc,feature importance,0.0
+Decision Tree,pc,feature importance,0.0
+Decision Tree,pcc,feature importance,0.0
+Decision Tree,ba,feature importance,0.0
+Decision Tree,htn,feature importance,0.0
+Decision Tree,dm,feature importance,0.0
+Decision Tree,cad,feature importance,0.0
+Decision Tree,appet,feature importance,0.0
+Decision Tree,pe,feature importance,0.0
+Decision Tree,ane,feature importance,0.0
+Random Forest,age,feature importance,0.008254061643452298
+Random Forest,bp,feature importance,0.0070362040131291955
+Random Forest,sg,feature importance,0.11172283025709358
+Random Forest,al,feature importance,0.043896350793572805
+Random Forest,su,feature importance,0.008894442480777722
+Random Forest,bgr,feature importance,0.021825194573964583
+Random Forest,bu,feature importance,0.020598496520426453
+Random Forest,sc,feature importance,0.10460395687379004
+Random Forest,sod,feature importance,0.016343398325407637
+Random Forest,pot,feature importance,0.010380695833333953
+Random Forest,hemo,feature importance,0.22059722337180845
+Random Forest,pcv,feature importance,0.17449905503426266
+Random Forest,wc,feature importance,0.009418355514973466
+Random Forest,rc,feature importance,0.12736216751246682
+Random Forest,rbc,feature importance,0.0017676853729554102
+Random Forest,pc,feature importance,0.004559032887896375
+Random Forest,pcc,feature importance,0.0004186920313381941
+Random Forest,ba,feature importance,0.00037155950174198095
+Random Forest,htn,feature importance,0.05756672749851457
+Random Forest,dm,feature importance,0.03825596754051909
+Random Forest,cad,feature importance,0.0005489225251215877
+Random Forest,appet,feature importance,0.005874399162674346
+Random Forest,pe,feature importance,0.003051866897114021
+Random Forest,ane,feature importance,0.00215271383366461
+XGBoost,age,feature importance,0.002835421124473214
+XGBoost,bp,feature importance,0.000229406519792974
+XGBoost,sg,feature importance,0.21688370406627655
+XGBoost,al,feature importance,0.20391541719436646
+XGBoost,su,feature importance,0.0
+XGBoost,bgr,feature importance,0.016727954149246216
+XGBoost,bu,feature importance,0.009635677561163902
+XGBoost,sc,feature importance,0.059645820409059525
+XGBoost,sod,feature importance,0.007293679751455784
+XGBoost,pot,feature importance,0.016599908471107483
+XGBoost,hemo,feature importance,0.21990323066711426
+XGBoost,pcv,feature importance,0.0051031275652348995
+XGBoost,wc,feature importance,0.0013767338823527098
+XGBoost,rc,feature importance,0.13990207016468048
+XGBoost,rbc,feature importance,0.0
+XGBoost,pc,feature importance,0.0
+XGBoost,pcc,feature importance,0.0
+XGBoost,ba,feature importance,0.0
+XGBoost,htn,feature importance,0.09994786977767944
+XGBoost,dm,feature importance,0.0
+XGBoost,cad,feature importance,0.0
+XGBoost,appet,feature importance,0.0
+XGBoost,pe,feature importance,0.0
+XGBoost,ane,feature importance,0.0

@@ -4,88 +4,114 @@
 **Institution:** Sunway University  
 **Project:** Capstone Project 2, Data Analytics
 
-An academic machine learning study comparing four individual classifiers and two soft-voting ensembles for Chronic Kidney Disease (CKD) classification. The project combines exploratory data analysis, model evaluation, and interpretability using structured clinical records.
+An academic machine learning project comparing four classifiers and two soft-voting ensembles for chronic kidney disease (CKD) classification. It includes data cleaning, exploratory analysis, evaluation, and explanations using coefficients, feature importance, and SHAP.
 
-> **Repository preparation status:** This README is prepared from the submitted capstone report and presentation. The final corrected notebook or Python script is still required before executable code, dependency versions, and verified run instructions can be added.
+**This repository contains a runnable reconstruction of the documented capstone.** The original final notebook was unavailable when the repository was prepared. The code uses training-only preprocessing and records its own results. The [original reported results](docs/reported_results.md) are preserved separately.
 
-## Project objectives
+![Model comparison from the reconstructed implementation](results/figures/model_comparison.svg)
 
-- Identify clinical variables that contribute to the models' CKD predictions.
-- Develop and compare individual classifiers and soft-voting ensembles.
-- Assess classification performance alongside interpretability.
+## What is included
 
-## Dataset
+| File or folder | Purpose |
+|---|---|
+| [ckd_pipeline.py](ckd_pipeline.py) | Complete workflow: cleaning, training, evaluation, charts, and SHAP |
+| [CKD_Capstone.ipynb](CKD_Capstone.ipynb) | Guided notebook that runs the same workflow |
+| [data/](data/) | Supplied dataset, source attribution, and file checksum |
+| [requirements.txt](requirements.txt) | Package versions used for the verified Python run |
+| [results/](results/) | Recorded metrics, test predictions, explanations, and figures |
+| [tests/test_pipeline.py](tests/test_pipeline.py) | Checks for training-only preprocessing, soft voting, and data validation |
 
-The supplied `kidney_disease.csv` contains **400 records** and **26 columns**:
+## Run the project
 
-- One identifier column, `id`, excluded from modelling.
-- **24 predictor columns** containing numeric and categorical measurements.
-- One target column, `classification`.
+Use **Python 3.12**. The command-line workflow needs no notebook server or GPU.
 
-After removing `id`, 25 columns remain, including the target. The target is also excluded from the predictor matrix. After trimming label whitespace, the supplied data contains **250 CKD** and **150 non-CKD** records. The project uses **CKD = 1** and **non-CKD = 0**.
+```bash
+git clone https://github.com/yannbintan/CKD-Capstone-Project.git
+cd CKD-Capstone-Project
+```
 
-Predictors include age, blood pressure, specific gravity, albumin, sugar, blood glucose, blood urea, serum creatinine, sodium, potassium, hemoglobin, blood cell measurements, and categorical clinical indicators. The dataset includes missing values and inconsistent text formatting.
+**Windows (PowerShell or Command Prompt):**
 
-The study identifies the dataset as the public CKD dataset obtained through Kaggle. Its exact source URL and redistribution information should accompany the final code package.
+```powershell
+py -3.12 -m venv .venv
+.venv\Scripts\python -m pip install -r requirements.txt
+.venv\Scripts\python ckd_pipeline.py
+```
 
-## Methodology
+**macOS / Linux:**
 
-The project workflow covers:
+```bash
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python ckd_pipeline.py
+```
 
-1. Inspecting the dataset, removing the identifier, cleaning text labels, and converting numeric fields.
-2. Exploring numeric distributions, categorical frequencies, class balance, and correlations.
-3. Preparing training and test sets for classification.
-4. Handling missing values, encoding categorical variables, and applying scaling where required.
-5. Training four individual models and two soft-voting ensembles.
-6. Evaluating predictions and examining model explanations.
+The run creates an `outputs/` directory containing metrics, predictions, figures, SHAP values, and `run_metadata.json`. That metadata file is written only after the entire requested run succeeds. It records dataset and source checksums, package versions, model settings, and the exact train/test row indices.
 
-The corrected implementation must split the data **before fitting imputers or scalers**. Imputation and scaling parameters must be learned from the training set and then applied to the test set. Scaling is required for the Logistic Regression component; the standalone tree models do not require it. The final source file is needed to verify these steps and the exact ensemble preprocessing.
+For another run, choose a new directory with `--output outputs-second-run`. Existing nonempty output directories are protected against overwriting. Other options are `--data PATH`, `--seed 42`, `--test-size 0.2`, and `--skip-shap`. Changing the split or packages may change the results.
 
-The report's code appendix shows an earlier preprocessing order, with imputation fitted before the train/test split. Those screenshots are not being treated as the final corrected executable implementation.
+To use the notebook, install `requirements-notebook.txt` instead of `requirements.txt`, launch `.venv\Scripts\jupyter lab` on Windows or `.venv/bin/jupyter lab` on macOS/Linux, and open `CKD_Capstone.ipynb`. The notebook creates a fresh folder inside `outputs/` for each run.
 
-## Models and reported results
+The [XGBoost installation guide](https://xgboost.readthedocs.io/en/stable/install.html) covers platform prerequisites if installation reports a missing native library. Execution was verified on Linux with Python 3.12; Windows and macOS were not tested here.
 
-The values below are the **reported capstone results**, reproduced from the submitted presentation. They have not been regenerated while preparing this repository.
+## Dataset and preparation
+
+The supplied CSV contains **400 records, 24 predictors, one ID, and one target**. After whitespace cleanup, there are **250 CKD** and **150 non-CKD** records. The positive class is **CKD = 1**; non-CKD = 0. Both `id` and `classification` are excluded from the predictor matrix.
+
+The data originates from the [UCI Chronic Kidney Disease dataset](https://archive.ics.uci.edu/dataset/336/chronic+kidney+disease), credited to Rubini, Soundarapandian, and Eswaran. The supplied CSV was verified against UCI's data after normalizing formatting and column names. See [data/README.md](data/README.md) for attribution, the CC BY 4.0 license link, the checksum, and modelling choices.
+
+The workflow:
+
+1. Cleans whitespace, missing markers, numeric values, and target labels.
+2. Makes a stratified 80/20 split using `random_state=42`.
+3. Fits numeric median and categorical mode imputers **only on training records**.
+4. Encodes ten categorical predictors using documented binary mappings.
+5. Fits a StandardScaler for Logistic Regression only, including its ensemble component.
+6. Trains all six model configurations and evaluates the same held-out records.
+
+Each learner has its own scikit-learn pipeline, including learners inside the soft-voting ensembles. EDA of predictor distributions and correlations uses the training set. No hyperparameter search or test-based tuning is performed.
+
+## Results from this implementation
+
+These results were generated by the code in this repository on **80 test records: 50 CKD and 30 non-CKD**. They are not substituted for the submitted report's results.
 
 | Model | Accuracy | Precision | Recall | F1-score | ROC-AUC |
 |---|---:|---:|---:|---:|---:|
-| Logistic Regression | 0.9875 | 1.00 | 0.98 | 0.9899 | 1.00 |
-| Decision Tree | 0.9875 | 1.00 | 0.98 | 0.9899 | 0.99 |
-| Random Forest | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
-| XGBoost | 0.9875 | 1.00 | 0.98 | 0.9899 | 0.9993 |
-| Logistic Regression + Random Forest, soft voting | 0.9875 | 1.00 | 0.98 | 0.9899 | 1.00 |
-| Decision Tree + XGBoost, soft voting | 0.9875 | 1.00 | 0.98 | 0.9899 | 1.00 |
+| Logistic Regression | 0.9875 | 1.0000 | 0.9800 | 0.9899 | 1.0000 |
+| Decision Tree | 0.9750 | 0.9800 | 0.9800 | 0.9800 | 0.9733 |
+| Random Forest | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
+| XGBoost | 0.9875 | 1.0000 | 0.9800 | 0.9899 | 1.0000 |
+| LR + RF, soft voting | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
+| DT + XGB, soft voting | 0.9750 | 0.9800 | 0.9800 | 0.9800 | 0.9993 |
 
-The reported test set contains **80 records: 50 CKD and 30 non-CKD**. Random Forest correctly classified all 80 records in that reported evaluation. The other five models each correctly classified 79 records.
+Random Forest and LR + RF tied at 80/80 correct in this run. Logistic Regression and XGBoost each classified 79/80 correctly; Decision Tree and DT + XGB each classified 78/80 correctly. The ensembles average their components' predicted probabilities with equal weights.
 
-The two hybrid models are **soft-voting ensembles**, combining predicted probabilities from their constituent classifiers. They should not be described as sequential feature-selection pipelines.
+Full values are in [metrics.csv](results/metrics.csv). Individual predictions, probabilities, and actual labels are in [test_predictions.csv](results/test_predictions.csv). The [run metadata](results/run_metadata.json) identifies the exact computation.
+
+![Confusion matrices for all six models](results/figures/confusion_matrices.svg)
 
 ## Interpretability
 
-The study reports Logistic Regression coefficients, tree-based feature importance, and SHAP analysis. Frequently discussed predictors include serum creatinine, hemoglobin, packed cell volume, specific gravity, red blood cell count, albumin, hypertension, and diabetes mellitus.
+The workflow produces standardized Logistic Regression coefficients, the three standalone tree models' feature importance, and Random Forest SHAP explanations for the CKD probability. SHAP uses the training path counts stored in the forest as its background distribution and explains the test records. The run checks that the SHAP contributions plus their baseline reproduce the model's CKD probabilities.
 
-These explanations describe model behaviour and associations within the dataset. They do not establish causal effects.
+![Random Forest SHAP importance](results/figures/shap_importance.svg)
 
-## Tools
-
-Python, pandas, NumPy, Matplotlib, scikit-learn, XGBoost, and SHAP.
-
-Exact package versions and installation commands will be recorded after inspecting the final executable source.
+Coefficients and SHAP values describe model associations, not causal effects. Feature rankings can depend on correlated predictors and the selected split. See [results/figures/](results/figures/) for EDA, correlations, ROC curves, coefficient/importance plots, and SHAP importance.
 
 ## My contribution
 
-I developed this capstone project from problem definition and dataset preparation through model comparison, interpretation, and reporting. My work included exploratory analysis, handling missing and inconsistent values, developing the six model configurations, comparing evaluation metrics, and explaining model predictions using coefficients, feature importance, and SHAP.
+My capstone work covered problem definition, dataset preparation, exploratory analysis, the six model configurations, performance comparison, interpretation, and the final report and presentation. This repository packages the documented study into an executable workflow with updated preprocessing, run instructions, and separately recorded verification results.
 
-## Reproduction and validation status
+## Validation and limitations
 
-The dataset's dimensions and class counts have been checked. The final corrected `.ipynb` or `.py` file is still needed to complete the repository and verify the preprocessing, dependencies, model settings, and reported results. No model training or end-to-end execution has been performed for this repository preparation.
+Run the regression checks with the environment's Python:
 
-The reported results come from a small dataset and a single 80-record test set. Further validation on independent and more diverse data is needed. This is an academic classification study and has not been validated for clinical use.
+```bash
+python -m unittest discover -s tests -v
+```
 
-## Documentation basis
+Replace `python` with `.venv\Scripts\python` on Windows or `.venv/bin/python` on macOS/Linux if the environment is not activated. Six checks cover dataset integrity and splitting, fitted preprocessing statistics, ensemble probabilities, whitespace cleanup, invalid labels, and completely missing training features.
 
-- Capstone Project 2 final report, dated 3 August 2026.
-- Final presentation supplied as `CP2 Presentation(2).pdf`.
-- The supplied `kidney_disease.csv` dataset.
+The full Python workflow was executed, including SHAP. The notebook's four code cells were also executed sequentially using IPython and its file format was validated. An interactive Jupyter server was not launched here. Recorded results are from a small dataset and a single test split. They do not establish generalisation to new hospitals or populations. The target represents existing CKD status; this experiment does not validate future disease-onset prediction. This is an academic project and has not been validated for clinical use.
 
-The report and presentation document the completed research. The final corrected source code remains the required basis for a reproducible implementation.
+Details of the reconstruction and differences from the report appear in [docs/reported_results.md](docs/reported_results.md).
